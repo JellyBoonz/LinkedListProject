@@ -46,6 +46,7 @@ public class Game extends Rental {
         this.console = console;
     }
 
+    //testing
     @Override
     public double getCost(GregorianCalendar dueBack) {
 
