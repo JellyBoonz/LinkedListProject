@@ -65,6 +65,7 @@ public class Game extends Rental {
         //
 
         double cost = 0;
+        //MOhamed trial
         if (console != null) {
             Console temp = new Console(this.nameOfRenter, rentedOn, this.dueBack, actualDateReturned, console.getConsoleType());
             cost += temp.getCost(dueBack);
