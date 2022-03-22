@@ -94,7 +94,7 @@ public class MyDoubleWithOutTailLinkedList implements Serializable {
         DNode prevNode = null;
         DNode nextNode = null;
         //Finds node at index and removes it
-        while(temp != null){
+        while(temp != null){ //FIXME: May Need to add temp.null instead of temp
             count++;
             eRemoved = temp.getData();
             temp = temp.getNext();
@@ -107,7 +107,8 @@ public class MyDoubleWithOutTailLinkedList implements Serializable {
                 nextNode.setPrev(prevNode);
                 return eRemoved; // returning removed rental
             }
-            else{
+
+            else if(index == (size() - 1)){
                 //If node is last in list
                 prevNode = temp.getPrev();
                 prevNode.setNext(null);
