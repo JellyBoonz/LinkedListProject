@@ -51,53 +51,106 @@ public class MyDoubleWithOutTailLinkedList implements Serializable {
             remove(number);
         }
     }
-
     public void add(Rental s) {
         DNode temp = top;
-
+        System.out.println("-------Adding-------");
         // no list
-        if (top == null) {
+        if (top == null) { //FIXME top is null even after addition
+            System.out.println(top);
             top = new DNode(s, null, null);
+            //temp = top;
+            //System.out.println("Prev: " + temp.getPrev());
+            System.out.println("Curr: " + top);
+            System.out.println("Next: " + top.getNext());
+            System.out.println("one" + size());
             return;
         }
+        else if(top != null && size() == 1){
+            DNode n = new DNode(s, null, temp);
+            temp.setNext(n);
+            System.out.println("Prev: " + temp.getPrev());
+            System.out.println("Curr: " + temp);
+            System.out.println("Next: " + temp.getNext());
+            System.out.println(n);
+        }
+        else if(top != null && size() > 1){
+            DNode n = new DNode(s, temp.getNext(), temp);
+            temp.getNext().setPrev(n);
+            temp.setNext(n);
+            System.out.println(n);
+        }
+        System.out.println(size());
+        return;
+
+        //temp = top;
 
         // s is a Game, and s goes on top
-        if (s instanceof Game && top.getData().getDueBack().after(s.dueBack)) {
-            top = new DNode(s, top, null);
-            top.getNext().setPrev(top);
-            return;
-        }
+//        if (s instanceof Game && top.getData().getDueBack().after(s.dueBack)) {
+//            top = new DNode(s, top, null);
+//            top.getNext().setPrev(top);
+//            System.out.println("Prev: " + temp.getPrev());
+//            System.out.println("Curr: " + temp);
+//            System.out.println("Next: " + temp.getNext());
+//            System.out.println("two" + size());
+//            return;
+//        }
+//        else if(top != null){
+//            DNode n = new DNode(s, null, temp);
+//            temp = n;
+//
+//        }
 
     }
 
     public Rental remove(int index) {
 
+        System.out.println("Hello, Remove");
+        System.out.println("-------Removing-------");
         int count = 0;
+
+        //System.out.println(index);
+        System.out.println(size());
 
         if(index >= size()){
             throw new IndexOutOfBoundsException();
         }
 
-        if (top == null)
+        if (top == null) {
+            System.out.println("Hello Top Null");
             return null;
+        }
 
         DNode temp = top;
         Rental eRemoved = null; // dont know about this one
 
-        if(index == 0){
+        //in the event of one node in list
+        if(size() == 1){
             eRemoved = temp.getData();
-            temp = temp.getNext(); //points to next node
-            temp.setPrev(null); // then points to null instead of initial top
+            temp.setNext(temp);
+            //System.out.println(eRemoved);
+            return eRemoved;
+        }
+
+        if(index == 0 && temp != null && size() > 1){
+            System.out.println("Hello");
+            eRemoved = temp.getData(); //first nodes data
+            top = temp.getNext(); //points to next node
+            //temp = top; //FIXME bug??
+            top.setPrev(null); // then points to null instead of initial top
+            temp = top;
+            return eRemoved;
         }
 
         temp = top;
         DNode prevNode = null;
         DNode nextNode = null;
+        eRemoved = temp.getData();
+
         //Finds node at index and removes it
-        while(temp != null){ //FIXME: May Need to add temp.null instead of temp
+        while(temp != null){
             count++;
-            eRemoved = temp.getData();
             temp = temp.getNext();
+            eRemoved = temp.getData();
             if(count == index && (index != size() - 1)){
                 prevNode = temp.getPrev();
                 nextNode = temp.getNext();
@@ -105,14 +158,14 @@ public class MyDoubleWithOutTailLinkedList implements Serializable {
                 //removing links to temp
                 prevNode.setNext(nextNode);
                 nextNode.setPrev(prevNode);
+                temp = top;
                 return eRemoved; // returning removed rental
             }
-
-            else if(index == (size() - 1)){
+            else{
                 //If node is last in list
                 prevNode = temp.getPrev();
                 prevNode.setNext(null);
-
+                temp = top;
                 return eRemoved; //returning removed rental
             }
         }
@@ -121,8 +174,6 @@ public class MyDoubleWithOutTailLinkedList implements Serializable {
 //        DNode temp2 = temp.getNext();
 //        temp.setNext(temp.getPrev());
 //        temp.setPrev(temp2);
-
-    // more code here
 
             return null;
 
